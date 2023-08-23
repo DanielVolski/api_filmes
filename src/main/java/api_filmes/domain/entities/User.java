@@ -9,7 +9,7 @@ public class User {
     private String password;
     private Date activationDate;
     private Date inactivationDate;
-    private List<Movie> movie;
+    private List<Movie> movies;
 
     public String getId() {
         return id;
