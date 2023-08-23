@@ -41,6 +41,12 @@ public class User {
     public void setInactivationDate(Date inactivationDate) {
         this.inactivationDate = inactivationDate;
     }
-
+    public List<Movie> getMovies() {
+        return movies;
+    }
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+    }
+    
     
 }
