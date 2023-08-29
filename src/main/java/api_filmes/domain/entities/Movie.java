@@ -4,16 +4,31 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 @Entity
 public class Movie {
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idMovie")
     private Long id;
-    @Column
+
+    @Column(nullable = false)
     private String title;
-    @Column
+
+    @Column(nullable = false)
     private String director;
-    @Column
-    private Date releaseDate;   
+
+    @Column(nullable = false)
+    private Date releaseDate;
+
+    @ManyToOne
+    @JoinColumn(name = "idUser")
+    private User user;
 
     public Long getId() {
         return id;

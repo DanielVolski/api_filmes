@@ -1,7 +1,6 @@
 package api_filmes.domain.entities;
 
 import java.util.Date;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,20 +12,27 @@ import jakarta.persistence.Id;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idUsuario") 
-    private String id;
+    @Column(name = "idUser") 
+    private Long id;
+
+    @Column(nullable = false)
     private String name;
+
     @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
     private String password;
+
     @Column(nullable = false)
     private Date activationDate;
+    
     private Date inactivationDate;
-    private List<Movie> movies;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getName() {
@@ -53,12 +59,4 @@ public class User {
     public void setInactivationDate(Date inactivationDate) {
         this.inactivationDate = inactivationDate;
     }
-    public List<Movie> getMovies() {
-        return movies;
-    }
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
-    }
-    
-    
 }

@@ -1,4 +1,4 @@
-package api_filmes.domain.config;
+package api_filmes.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
