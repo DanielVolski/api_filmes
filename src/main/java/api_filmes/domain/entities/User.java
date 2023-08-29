@@ -3,10 +3,22 @@ package api_filmes.domain.entities;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idUsuario") 
     private String id;
     private String name;
+    @Column(nullable = false, unique = true)
     private String password;
+    @Column(nullable = false)
     private Date activationDate;
     private Date inactivationDate;
     private List<Movie> movies;

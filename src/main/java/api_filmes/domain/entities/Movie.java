@@ -2,10 +2,17 @@ package api_filmes.domain.entities;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+@Entity
 public class Movie {
+    
     private Long id;
+    @Column
     private String title;
+    @Column
     private String director;
+    @Column
     private Date releaseDate;   
 
     public Long getId() {
