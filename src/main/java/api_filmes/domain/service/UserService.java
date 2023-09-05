@@ -1,40 +1,80 @@
 package api_filmes.domain.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import api_filmes.domain.dto.user.UserRequestDTO;
+import api_filmes.domain.dto.user.UserResponseDTO;
+import api_filmes.domain.entities.User;
+import api_filmes.domain.repository.UserRepository;
+
 @Service
-public class UserService implements ICRUDService {
+public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO> {
+
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ModelMapper mapper;
 
     @Override
-    public List getAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAll'");
+    public List<UserResponseDTO> getAll() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(user -> mapper.map(user, UserResponseDTO.class)).collect(Collectors.toList());
     }
 
     @Override
-    public Object getById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getById'");
+    public UserResponseDTO getById(Long id) {
+        // @Daniel oque vc acha do encontrar por email?
+        // Optional optionalUser = userRepository.findByEmail()
+        Optional optionalUser = userRepository.findById(id);
+        if (!optionalUser.isPresent()) {
+            // Fazer função de exceção
+        }
+        return mapper.map(optionalUser.get(), UserResponseDTO.class);
     }
 
     @Override
-    public Object create(Object dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
+    public UserResponseDTO create(UserRequestDTO dto) {
+        if (dto.getEmail() == null || dto.getPassword() == null || dto.getName() == null) {
+            // Execeção de todos os campos obrigatórios
+        }
+        Optional<User> optionalUser = userRepository.findByEmail(dto.getEmail());
+        if (optionalUser.isPresent()) {
+            // Execeção de email já cadastrado
+        }
+        User user = mapper.map(dto, User.class);
+        // Fazer criptiografia da senha
+        return mapper.map(user, UserResponseDTO.class);
     }
 
     @Override
-    public Object update(Long id, Object dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    public UserResponseDTO update(Long id, UserRequestDTO dto) {
+        UserResponseDTO userDb = (UserResponseDTO) getById(id); 
+        /*
+        * Se quiser implementar verificação certa de email, pode se busca o email, que já vai estar cadastrado. Aì o certo é verificar se o email está em outro id, ou seja, é de outro usuário, se os ids forem diferentes não permitir atualização, se for igual permitir.
+        */
+        if (dto.getEmail() == null || dto.getPassword() == null || dto.getName() == null) {
+            // Execeção de todos os campos obrigatórios
+        }
+        User user = mapper.map(dto, User.class);
+        user.setActivationDate(userDb.getActivationDate());
+        user.setPassword(dto.getPassword());
+        user.setId(id);
+        user.setInactivationDate(userDb.getInactivationDate());
+        user = (User) userRepository.save(user);
+        return mapper.map(user, UserResponseDTO.class);
     }
 
     @Override
     public void delete(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        // Fazendo deleção e não inativação, se não usar inativação, pode apagar esse método
+        getById(id);
+        userRepository.deleteById(id);
     }
     
 }
