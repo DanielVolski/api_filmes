@@ -1,10 +1,18 @@
 package api_filmes.domain.entities;
 
+
 public class ResponseError {
+    private String timestamp;
     private Integer status;
     private String title;
     private String message;
-
+    
+    public String getTimestamp() {
+        return timestamp;
+    }
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
     public Integer getStatus() {
         return status;
     }
@@ -23,7 +31,8 @@ public class ResponseError {
     public void setMessage(String message) {
         this.message = message;
     }
-    public ResponseError(Integer status, String title, String message) {
+    public ResponseError(String timestamp, Integer status, String title, String message) {
+        this.timestamp = timestamp;
         this.status = status;
         this.title = title;
         this.message = message;
