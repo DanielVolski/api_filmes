@@ -40,7 +40,7 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
     public UserResponseDTO getById(Long id) {
         // @Daniel oque vc acha do encontrar por email?
         // Optional optionalUser = userRepository.findByEmail()
-        Optional optionalUser = userRepository.findById(id);
+        Optional<User> optionalUser = userRepository.findById(id);
         if (!optionalUser.isPresent()) {
             throw new ResourceNotFoundException("Usuário não encontrado!");
         }
@@ -59,7 +59,7 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
         user.setPassword(password);
         user.setId(null);
         user.setActivationDate(new Date());
-        user = (User) userRepository.save(user);
+        user = userRepository.save(user);
         return mapper.map(user, UserResponseDTO.class);
     }
 
