@@ -1,16 +1,21 @@
 package api_filmes.domain.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import api_filmes.common.CheckFields;
 import api_filmes.domain.dto.user.UserRequestDTO;
 import api_filmes.domain.dto.user.UserResponseDTO;
 import api_filmes.domain.entities.User;
+import api_filmes.domain.exception.BadRequestException;
+import api_filmes.domain.exception.ResourceNotFoundException;
 import api_filmes.domain.repository.UserRepository;
 
 @Service
@@ -20,6 +25,10 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
     private UserRepository userRepository;
     @Autowired
     private ModelMapper mapper;
+    @Autowired
+    private CheckFields check;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public List<UserResponseDTO> getAll() {
@@ -33,22 +42,24 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
         // Optional optionalUser = userRepository.findByEmail()
         Optional optionalUser = userRepository.findById(id);
         if (!optionalUser.isPresent()) {
-            // Fazer função de exceção
+            throw new ResourceNotFoundException("Usuário não encontrado!");
         }
         return mapper.map(optionalUser.get(), UserResponseDTO.class);
     }
 
     @Override
     public UserResponseDTO create(UserRequestDTO dto) {
-        if (dto.getEmail() == null || dto.getPassword() == null || dto.getName() == null) {
-            // Execeção de todos os campos obrigatórios
-        }
+        check.verifyFields(dto.getEmail(), dto.getPassword(), dto.getName());
         Optional<User> optionalUser = userRepository.findByEmail(dto.getEmail());
         if (optionalUser.isPresent()) {
-            // Execeção de email já cadastrado
+            throw new BadRequestException("Esse usuário já está cadastrado!");
         }
         User user = mapper.map(dto, User.class);
-        // Fazer criptiografia da senha
+        String password = passwordEncoder.encode(user.getPassword());
+        user.setPassword(password);
+        user.setId(null);
+        user.setActivationDate(new Date());
+        user = (User) userRepository.save(user);
         return mapper.map(user, UserResponseDTO.class);
     }
 
@@ -58,13 +69,12 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
         /*
         * Se quiser implementar verificação certa de email, pode se busca o email, que já vai estar cadastrado. Aì o certo é verificar se o email está em outro id, ou seja, é de outro usuário, se os ids forem diferentes não permitir atualização, se for igual permitir.
         */
-        if (dto.getEmail() == null || dto.getPassword() == null || dto.getName() == null) {
-            // Execeção de todos os campos obrigatórios
-        }
+        check.verifyFields(dto.getEmail(), dto.getPassword(), dto.getName());
         User user = mapper.map(dto, User.class);
         user.setActivationDate(userDb.getActivationDate());
         user.setPassword(dto.getPassword());
         user.setId(id);
+        user.setActivationDate(userDb.getActivationDate());
         user.setInactivationDate(userDb.getInactivationDate());
         user = (User) userRepository.save(user);
         return mapper.map(user, UserResponseDTO.class);
