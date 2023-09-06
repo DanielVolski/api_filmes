@@ -8,9 +8,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
 @EnableWebSecurity
@@ -37,7 +37,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.headers().frameOptions().disable().and().cors().and().csrf().disable()
         .authorizeHttpRequests((auth) ->
-         auth.requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
+         auth.requestMatchers(HttpMethod.POST, "/api/users").permitAll()
         .anyRequest().authenticated())
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // Aquia pode dar erro, se der, apague o .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         http.addFilter(new JwtAuthenticationFilter(authenticationManager(authenticationConfiguration), jwtUtil));
