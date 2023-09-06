@@ -1,11 +1,13 @@
 package api_filmes.domain.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import api_filmes.common.CheckFields;
@@ -25,6 +27,8 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
     private ModelMapper mapper;
     @Autowired
     private CheckFields check;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public List<UserResponseDTO> getAll() {
@@ -51,7 +55,11 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
             throw new BadRequestException("Esse usuário já está cadastrado!");
         }
         User user = mapper.map(dto, User.class);
-        // Fazer criptiografia da senha
+        String password = passwordEncoder.encode(user.getPassword());
+        user.setPassword(password);
+        user.setId(null);
+        user.setActivationDate(new Date());
+        user = (User) userRepository.save(user);
         return mapper.map(user, UserResponseDTO.class);
     }
 
@@ -66,6 +74,7 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
         user.setActivationDate(userDb.getActivationDate());
         user.setPassword(dto.getPassword());
         user.setId(id);
+        user.setActivationDate(userDb.getActivationDate());
         user.setInactivationDate(userDb.getInactivationDate());
         user = (User) userRepository.save(user);
         return mapper.map(user, UserResponseDTO.class);
