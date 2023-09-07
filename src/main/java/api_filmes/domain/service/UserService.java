@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import api_filmes.common.CheckFields;
 import api_filmes.domain.dto.user.UserRequestDTO;
 import api_filmes.domain.dto.user.UserResponseDTO;
 import api_filmes.domain.entities.User;
@@ -25,8 +24,6 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
     private UserRepository userRepository;
     @Autowired
     private ModelMapper mapper;
-    @Autowired
-    private CheckFields check;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -49,7 +46,9 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
 
     @Override
     public UserResponseDTO create(UserRequestDTO dto) {
-        check.verifyFields(dto.getEmail(), dto.getPassword(), dto.getName());
+        if (dto.getEmail() == null || dto.getPassword() == null || dto.getName() == null) {
+            throw new BadRequestException("Preencha todos os campos!");
+        }
         Optional<User> optionalUser = userRepository.findByEmail(dto.getEmail());
         if (optionalUser.isPresent()) {
             throw new BadRequestException("Esse usuário já está cadastrado!");
@@ -69,14 +68,16 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
         /*
         * Se quiser implementar verificação certa de email, pode se busca o email, que já vai estar cadastrado. Aì o certo é verificar se o email está em outro id, ou seja, é de outro usuário, se os ids forem diferentes não permitir atualização, se for igual permitir.
         */
-        check.verifyFields(dto.getEmail(), dto.getPassword(), dto.getName());
+        if (dto.getEmail() == null || dto.getPassword() == null || dto.getName() == null) {
+            throw new BadRequestException("Preencha todos os campos!");
+        }
         User user = mapper.map(dto, User.class);
         user.setActivationDate(userDb.getActivationDate());
         user.setPassword(dto.getPassword());
         user.setId(id);
         user.setActivationDate(userDb.getActivationDate());
         user.setInactivationDate(userDb.getInactivationDate());
-        user = (User) userRepository.save(user);
+        user = userRepository.save(user);
         return mapper.map(user, UserResponseDTO.class);
     }
 

@@ -18,7 +18,7 @@ public class JwtUtil {
 
     @Value("${auth.jwt.secret}")
     private String secret;
-    @Value("${auth.jwt.expiration}")
+    @Value("${auth.jwt-expiration-milliseg}")
     private Long expiration;
 
     public String generateToken(Authentication authentication) {
