@@ -9,19 +9,20 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import api_filmes.domain.dto.user.UserRequestDTO;
 import api_filmes.domain.dto.user.UserResponseDTO;
 import api_filmes.domain.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("/api/users")
 @CrossOrigin("*")
 public class UserController {
     
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getById(Long id) {
+    public ResponseEntity<UserResponseDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getById(id));
     }
 
@@ -45,7 +46,7 @@ public class UserController {
     }  
     
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO>  update(Long id, @RequestBody UserRequestDTO dto) {
+    public ResponseEntity<UserResponseDTO>  update(@PathVariable Long id, @RequestBody UserRequestDTO dto) {
         UserResponseDTO user = userService.update(id, dto);
         return new ResponseEntity<UserResponseDTO>(user, HttpStatus.OK);
     }

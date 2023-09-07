@@ -58,7 +58,7 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
         user.setPassword(password);
         user.setId(null);
         user.setActivationDate(new Date());
-        user = (User) userRepository.save(user);
+        user = userRepository.save(user);
         return mapper.map(user, UserResponseDTO.class);
     }
 
@@ -77,7 +77,7 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
         user.setId(id);
         user.setActivationDate(userDb.getActivationDate());
         user.setInactivationDate(userDb.getInactivationDate());
-        user = (User) userRepository.save(user);
+        user = userRepository.save(user);
         return mapper.map(user, UserResponseDTO.class);
     }
 

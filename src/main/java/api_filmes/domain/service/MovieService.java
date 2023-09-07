@@ -1,4 +1,4 @@
-package api_filmes.domain.service;
+/* package api_filmes.domain.service;
 
 import java.util.List;
 
@@ -47,3 +47,4 @@ public class MovieService implements ICRUDService {
     }
     
 }
+ */
