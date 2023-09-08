@@ -35,12 +35,6 @@ public class Movie {
     @JoinColumn(name = "idUser")
     private User user;
 
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
     public Long getId() {
         return id;
     }
@@ -70,5 +64,11 @@ public class Movie {
     }
     public void setRegisteredAt(Date registeredAt) {
         this.registeredAt = registeredAt;
+    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 }

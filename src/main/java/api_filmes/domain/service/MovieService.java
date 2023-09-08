@@ -1,4 +1,4 @@
-/* package api_filmes.domain.service;
+package api_filmes.domain.service;
 
 import java.util.Date;
 import java.util.List;
@@ -31,9 +31,7 @@ public class MovieService implements ICRUDService<MovieRequestDTO, MovieResponse
 
         List<Movie> movies = movieRepository.findByUser(user);
 
-        return movies.stream().map(
-            movie -> mapper.map(movies, MovieResponseDTO.class)).collect(Collectors.toList()
-        );     
+        return movies.stream().map(movie -> mapper.map(movie, MovieResponseDTO.class)).collect(Collectors.toList());     
     }
 
     @Override
@@ -65,9 +63,9 @@ public class MovieService implements ICRUDService<MovieRequestDTO, MovieResponse
         MovieResponseDTO movieFromDB = getById(id);
         Movie movie = mapper.map(dto, Movie.class);
 
+        movie.setId(id);
         movie.setUser(user);
         movie.setRegisteredAt(movieFromDB.getRegisteredAt());
-        movie.setId(null);
         movie = movieRepository.save(movie);
 
         return mapper.map(movie, MovieResponseDTO.class);
@@ -78,4 +76,3 @@ public class MovieService implements ICRUDService<MovieRequestDTO, MovieResponse
         movieRepository.deleteById(id);
     }
 }
- */

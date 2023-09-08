@@ -38,5 +38,5 @@ public class MovieResponseDTO {
     }
     public void setRegisteredAt(Date registeredAt) {
         this.registeredAt = registeredAt;
-    }    
+    }
 }
