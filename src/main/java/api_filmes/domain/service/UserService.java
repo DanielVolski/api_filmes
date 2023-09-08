@@ -55,6 +55,7 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
         }
         User user = mapper.map(dto, User.class);
         String password = passwordEncoder.encode(user.getPassword());
+        user.setEmail(dto.getEmail());
         user.setPassword(password);
         user.setId(null);
         user.setActivationDate(new Date());
@@ -62,6 +63,7 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
         return mapper.map(user, UserResponseDTO.class);
     }
 
+    // TODO: Criptografar a senha ao fazer a atualização dos dados do usuário 
     @Override
     public UserResponseDTO update(Long id, UserRequestDTO dto) {
         UserResponseDTO userDb = (UserResponseDTO) getById(id); 
