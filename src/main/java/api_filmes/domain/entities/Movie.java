@@ -28,6 +28,9 @@ public class Movie {
     @Column(nullable = false)
     private Date releaseDate;
 
+    @Column(nullable = false)
+    private Date registeredAt;
+
     @ManyToOne
     @JoinColumn(name = "idUser")
     private User user;
@@ -62,5 +65,10 @@ public class Movie {
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
-    
+    public Date getRegisteredAt() {
+        return registeredAt;
+    }
+    public void setRegisteredAt(Date registeredAt) {
+        this.registeredAt = registeredAt;
+    }
 }

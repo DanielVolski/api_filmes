@@ -7,6 +7,7 @@ public class MovieRequestDTO {
     private String title;
     private String director;
     private Date releaseDate;
+    private Date registeredAt;
     
     public Long getId() {
         return id;
@@ -32,6 +33,11 @@ public class MovieRequestDTO {
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
-
+    public Date getRegisteredAt() {
+        return registeredAt;
+    }
+    public void setRegisteredAt(Date registeredAt) {
+        this.registeredAt = registeredAt;
+    }
     
 }
