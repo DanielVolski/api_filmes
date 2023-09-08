@@ -3,7 +3,6 @@ package api_filmes.security;
 import java.io.IOException;
 import java.util.Date;
 
-import org.springframework.boot.autoconfigure.jersey.JerseyProperties.Servlet;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -21,7 +20,6 @@ import api_filmes.domain.dto.login.LoginResponseDTO;
 import api_filmes.domain.dto.user.UserResponseDTO;
 import api_filmes.domain.entities.ResponseError;
 import api_filmes.domain.entities.User;
-import ch.qos.logback.core.net.LoginAuthenticator;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,12 +28,13 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
     
     private AuthenticationManager authenticationManager;
+   // @Autowired // se precisar comentar essa parte
     private JwtUtil jwtUtil;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
-        setFilterProcessesUrl("api/auth");
+        setFilterProcessesUrl("/api/auth");
     }
 
     @Override
