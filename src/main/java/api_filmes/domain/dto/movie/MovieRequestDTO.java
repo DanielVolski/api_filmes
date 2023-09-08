@@ -6,6 +6,8 @@ public class MovieRequestDTO {
     private Long id;
     private String title;
     private String director;
+    private String writer;
+    private String genre;
     private Date releaseDate;
     private Date registeredAt;
     
@@ -26,6 +28,19 @@ public class MovieRequestDTO {
     }
     public void setDirector(String director) {
         this.director = director;
+    }
+    
+    public String getWriter() {
+        return writer;
+    }
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+    public String getGenre() {
+        return genre;
+    }
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
     public Date getReleaseDate() {
         return releaseDate;

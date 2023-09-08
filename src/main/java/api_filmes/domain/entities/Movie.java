@@ -29,6 +29,12 @@ public class Movie {
     private String director;
 
     @Column(nullable = false)
+    private String writer;
+
+    @Column(nullable = false)
+    private String genre;
+
+    @Column(nullable = false)
     private Date releaseDate;
 
     @Column(nullable = false)
@@ -56,6 +62,19 @@ public class Movie {
     }
     public void setDirector(String director) {
         this.director = director;
+    }
+    
+    public String getWriter() {
+        return writer;
+    }
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+    public String getGenre() {
+        return genre;
+    }
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
     public Date getReleaseDate() {
         return releaseDate;
