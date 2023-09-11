@@ -75,7 +75,8 @@ public class UserService implements ICRUDService<UserRequestDTO, UserResponseDTO
         }
         User user = mapper.map(dto, User.class);
         user.setActivationDate(userDb.getActivationDate());
-        user.setPassword(dto.getPassword());
+        String password = passwordEncoder.encode(dto.getPassword());
+        user.setPassword(password);
         user.setId(id);
         user.setActivationDate(userDb.getActivationDate());
         user.setInactivationDate(userDb.getInactivationDate());
